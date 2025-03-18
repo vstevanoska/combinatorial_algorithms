@@ -10,7 +10,7 @@ def brute_force(multiset):
     n = int((1 + sqrt(1 + 4 * (2 * len(multiset)))) // 2)
 
     # max element in multiset
-    M = multiset[len(multiset) - 1]
+    M = max(multiset)
 
     result = []
 
@@ -27,7 +27,7 @@ def brute_force(multiset):
 
 def partial_digest(multiset):
 
-    width = multiset[len(multiset) - 1]
+    width = max(multiset)
 
     multiset.pop()
 
@@ -115,8 +115,8 @@ if __name__ == '__main__':
 
 
     #declare restriction cuts
-    # restriction_cuts = ["GTGTG"]                                  #DNK1
-    restriction_cuts = ["TTCC", "CTCTCT"]                         #DNK1
+    restriction_cuts = ["GTGTG"]                                  #DNK1
+    # restriction_cuts = ["TTCC", "CTCTCT"]                         #DNK1
     # restriction_cuts = ["AAAA", "CCCC", "TTTT", "GGGG"]           #DNK1
     # restriction_cuts = ["ACTACT", "GGAGGA", "GAGGCC", "CTCTCT"]   #DNK2
     # restriction_cuts = ["TTTTTTT", "GTGTCGT", "ACACACA"]            #DNK3
@@ -124,18 +124,22 @@ if __name__ == '__main__':
 
     #find indexes of each cut
     indexes = []
+    occurrence_frequencies = []
 
     for cut in restriction_cuts:
 
         found_index = -1
+        freq = 0
 
         while True:
             found_index = text.find(cut, found_index + 1)
 
             if (found_index == -1):
+                occurrence_frequencies.append(freq)
                 break
 
             indexes.append(found_index)
+            freq += 1
 
         if (len(indexes) == 0):
             print("Restriction cut couldn't be found!")
@@ -152,21 +156,53 @@ if __name__ == '__main__':
     multiset = delta(indexes)
 
     print("Found multiset: ", multiset)
-
+    
+    for i in range(len(restriction_cuts)):
+        print("Frequency of ", restriction_cuts[i], ": ", occurrence_frequencies[i] / len(text))
 
     #brute force
     # start_time = time.time()
     
-    # X_brute = brute_force(multiset)
+    # X_final = brute_force(multiset.copy())
 
-    # print("Elapsed time for brute force: ", time.time() - start_time)
-    # print("Result: ", X_brute)
+    # print("Elapsed time for brute force: ", (time.time() - start_time) * 1000)
+    # print("Result: ", X_final)
 
-    #razveji in omeji
-    start_time = time.time()
+    # razveji in omeji
+    # start_time = time.time()
 
-    X_divide = partial_digest(multiset)
+    # X_final = partial_digest(multiset.copy())
 
-    print("Elapsed time for divide and conquer: ", time.time() - start_time)
-    print("Result: ", X_divide)
+    # print("Elapsed time for divide and conquer: ", (time.time() - start_time) * 1000)
+    # print("Result: ", X_final)
+
+
+    #write to file
+    # output_file = open("cuts_output.txt", "w")
+
+    # output_file.write(''.join(str(value) for value in X_final))
+
+    # output_file.close()
+
+    # avg = 0
+
+    # for i in range(10):
+
+    #     start_time = time.time()
+    #     brute_force(multiset.copy())
+    #     avg += (time.time() - start_time) * 1000
+
+    # print("Average time for brute force is: ", avg / 10)
+
+    avg = 0
+
+    for i in range(100):
+
+        start_time = time.time()
+        partial_digest(multiset.copy())
+        avg += (time.time() - start_time) * 1000
+
+    print("Average time for divide and conquer is: ", avg / 100)
+
+
 
