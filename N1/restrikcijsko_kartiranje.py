@@ -115,11 +115,11 @@ if __name__ == '__main__':
 
 
     #declare restriction cuts
-    restriction_cuts = ["GTGTG"]                                  #DNK1
+    # restriction_cuts = ["GTGTG"]                                  #DNK1
     # restriction_cuts = ["TTCC", "CTCTCT"]                         #DNK1
     # restriction_cuts = ["AAAA", "CCCC", "TTTT", "GGGG"]           #DNK1
     # restriction_cuts = ["ACTACT", "GGAGGA", "GAGGCC", "CTCTCT"]   #DNK2
-    # restriction_cuts = ["TTTTTTT", "GTGTCGT", "ACACACA"]            #DNK3
+    restriction_cuts = ["TTTTTTT", "GTGTCGT", "ACACACA"]            #DNK3
 
 
     #find indexes of each cut
@@ -169,20 +169,20 @@ if __name__ == '__main__':
     # print("Result: ", X_final)
 
     # razveji in omeji
-    # start_time = time.time()
+    start_time = time.time()
 
-    # X_final = partial_digest(multiset.copy())
+    X_final = partial_digest(multiset.copy())
 
-    # print("Elapsed time for divide and conquer: ", (time.time() - start_time) * 1000)
-    # print("Result: ", X_final)
+    print("Elapsed time for divide and conquer: ", (time.time() - start_time) * 1000)
+    print("Result: ", X_final)
 
 
     #write to file
-    # output_file = open("cuts_output.txt", "w")
+    output_file = open("cuts_output.txt", "w")
 
-    # output_file.write(''.join(str(value) for value in X_final))
+    output_file.write(''.join(str(value) for value in X_final))
 
-    # output_file.close()
+    output_file.close()
 
     # avg = 0
 
@@ -194,15 +194,15 @@ if __name__ == '__main__':
 
     # print("Average time for brute force is: ", avg / 10)
 
-    avg = 0
+    # avg = 0
 
-    for i in range(100):
+    # for i in range(100):
 
-        start_time = time.time()
-        partial_digest(multiset.copy())
-        avg += (time.time() - start_time) * 1000
+    #     start_time = time.time()
+    #     partial_digest(multiset.copy())
+    #     avg += (time.time() - start_time) * 1000
 
-    print("Average time for divide and conquer is: ", avg / 100)
+    # print("Average time for divide and conquer is: ", avg / 100)
 
 
 
