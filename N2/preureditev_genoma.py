@@ -98,17 +98,21 @@ def find_parts(genom):
 
     # sort descending
 
+    # print("Before descending: ", descending)
+
     for i in range(len(descending) - 1):
 
-        if (descending[i][len(descending) - 1] > descending[i + 1][len(descending) - 1]):
+        for j in range(i + 1, len(descending)):
 
-            temp_value = descending[i]
-            descending[i] = descending[i + 1]
-            descending[i + 1] = temp_value
+            if (descending[i][len(descending[i]) - 1] > descending[j][len(descending[j]) - 1]):
 
-            temp_value = temp_list_index_des[i]
-            temp_list_index_des[i] = temp_list_index_des[i + 1]
-            temp_list_index_des[i + 1] = temp_value
+                temp_value = descending[i]
+                descending[i] = descending[j]
+                descending[j] = temp_value
+
+                temp_value = temp_list_index_des[i]
+                temp_list_index_des[i] = temp_list_index_des[j]
+                temp_list_index_des[j] = temp_value
 
 
     # print("Ascending: ", ascending)
@@ -116,14 +120,21 @@ def find_parts(genom):
     # print("Temp list index asc: ", temp_list_index_asc)
     # print("Temp list index des: ", temp_list_index_des)
 
+    # print("After descending: ", descending)
+
     return temp_list_index_asc, temp_list_index_des
 
 
 def preurejanje_trakov(genom):
 
+    genom = [0] + genom + [len(genom) + 1]
+    print("Start: ", genom)
+
     breakpoints = count_breakpoints(genom)
     
     while (breakpoints > 0):
+
+        # print("Breakpoints: ", breakpoints)
 
         ascending, descending = find_parts(genom)
 
@@ -131,13 +142,36 @@ def preurejanje_trakov(genom):
             obrat = descending[0]
         
         else:
-            obrni(genom, ascending[0][0], ascending[0][1])
-            obrat = ascending[0]
 
-        obrni(genom, obrat[0], obrat[1])
+            for i in range(len(ascending)):
 
-        segment = genom[obrat[0]:obrat[1]]
-        
+                if ascending[i][0] != 0:
+
+                    obrni(genom, ascending[i][0], ascending[i][1])
+                    obrat = ascending[i]
+
+                    break
+
+        for i in range(len(genom)):
+
+            if (genom[i] + 1 == genom[obrat[1]]) and (i < obrat[1]):
+
+                obrni(genom, i + 1, obrat[1])
+
+                breakpoints = count_breakpoints(genom)
+
+                # if (genom[obrat[1]] + 1 == genom[obrat[1] + 1]):
+                #     breakpoints -= 1
+
+                break
+
+            elif (genom[i] + 1 == genom[obrat[1]]) and (i > obrat[0]):
+
+                obrni(genom, obrat[1] + 1, i)
+
+                breakpoints = count_breakpoints(genom)
+
+                break
 
         print("Current state: ", genom)
 
